@@ -1,4 +1,4 @@
-To run code in this repo on your Ubuntu machine you should
+To run code from this repo on your Ubuntu machine you should
 
 1) Install Adept2 software (Runtime - Latest Downloads):   https://digilent.com/reference/software/adept/start
 
