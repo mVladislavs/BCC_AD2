@@ -1,4 +1,4 @@
-def GenSet(frequency:int, amplitude:float, chanel:bool):
+def GenSet(frequency:int, amplitude:float, channel:bool):
 
     import dwf
     import sys
@@ -7,26 +7,31 @@ def GenSet(frequency:int, amplitude:float, chanel:bool):
         sys.exit("Frequency cannot be > 50MHz")
     
     elif frequency < 0:
-        sys.exit("Frequency cannot be < 0Hz") 
+        sys.exit("Frequency cannot be < 0Hz")
     
     elif amplitude > 5:
         sys.exit("Amplitude cannot be > 5V")
 
     elif amplitude < 0:
-        sys.exit("Amplitude cannot be < 0V")        
+        sys.exit("Amplitude cannot be < 0V") 
 
-    AO = dwf.DwfAnalogOut()  #open device as analog outpput
+    elif not isinstance(channel, bool):
+        sys.exit("Choose the right channel:\nFalse - 1st channel\nTrue - 2nd channel")
 
-    AO.nodeEnableSet(chanel, AO.NODE.CARRIER, True)
-    AO.nodeFunctionSet(chanel, AO.NODE.CARRIER, AO.FUNC.SINE)
-    AO.nodeFrequencySet(chanel,AO.NODE.CARRIER, frequency)
-    AO.nodeAmplitudeSet(chanel, AO.NODE.CARRIER, amplitude)
-    # AO.nodeOffsetSet(CHANNEL, AO.NODE.CARRIER, 0)
-
+    #open device as analog outpput
+    AO = dwf.DwfAnalogOut()  
+    #confugure the channel
+    AO.nodeEnableSet(channel, AO.NODE.CARRIER, True)
+    AO.nodeFunctionSet(channel, AO.NODE.CARRIER, AO.FUNC.SINE)
+    AO.nodeFrequencySet(channel,AO.NODE.CARRIER, frequency)
+    AO.nodeAmplitudeSet(channel, AO.NODE.CARRIER, amplitude)
+    # AO.nodeOffsetSet(channel, AO.NODE.CARRIER, 0)
+    
+    # Run
+    AO.configure(channel, True)
+    
+    # Break
     print("Press Enter to exit")
-    while True:
-        AO.configure(chanel, True)
-        breaker = input()
-        if not breaker:
-            break
-    AO.close()
+    breaker = input()
+    if not breaker:
+        AO.close()
