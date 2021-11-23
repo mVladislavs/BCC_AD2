@@ -1,4 +1,4 @@
-def GenSet(frequency:int, amplitude:float, channel:bool):
+def GenSet(frequency: int, amplitude: float, channel: bool):
 
     import dwf
     import sys
