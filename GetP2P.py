@@ -1,4 +1,4 @@
-def GetP2P(averagingBufferSize: int, channel:bool):
+def GetP2P(averagingBufferSize: int, channel: bool):
     import dwf
     import time
     import sys
