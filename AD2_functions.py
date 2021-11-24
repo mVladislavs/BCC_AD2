@@ -102,5 +102,5 @@ def GetP2P(averagingBufferSize: int, channel:bool):
     
     # Finish
     # scope.close()
-    print(P2P)
-    # return P2P
+    # print(P2P)
+    return P2P
