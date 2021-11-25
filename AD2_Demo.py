@@ -9,21 +9,21 @@ gen1.start()
 time.sleep(1)
 for i in range(5):
     P2P = GetP2P(2000, False)
-    print(P2P + "\n")
+    print(P2P)
 gen1.join()
 
 gen2.start()
 time.sleep(1)
 for i in range(5):
     P2P = GetP2P(2000, False)
-    print(P2P + "\n")
+    print(P2P)
 gen2.join()
 
 gen3.start()
 time.sleep(1)
 for i in range(5):
     P2P = GetP2P(2000, False)
-    print(P2P + "\n")
+    print(P2P)
 gen3.join()
 
 
