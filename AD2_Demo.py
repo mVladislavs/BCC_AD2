@@ -8,25 +8,28 @@ gen3 = Thread(target=GenSet, args=(3e6, 3, False),)
 gen1.start()
 time.sleep(1)
 for i in range(5):
-    GetP2P(2000, False)
+    P2P = GetP2P(2000, False)
+    print(P2P + "\n")
 gen1.join()
 
 gen2.start()
 time.sleep(1)
 for i in range(5):
-    GetP2P(2000, False)
+    P2P = GetP2P(2000, False)
+    print(P2P + "\n")
 gen2.join()
 
 gen3.start()
 time.sleep(1)
 for i in range(5):
-    GetP2P(8192, False)
+    P2P = GetP2P(2000, False)
+    print(P2P + "\n")
 gen3.join()
 
 
 
-GenSet(3e6,1,False)
-GetP2P(2000,False)
+# GenSet(3e6,1,False)
+# GetP2P(2000,False)
 
 
 
