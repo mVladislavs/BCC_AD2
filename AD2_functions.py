@@ -66,7 +66,7 @@ def GetP2P(averagingBufferSize: int, channel:bool):
         sys.exit("avarangingBufferSize should be integer value")
     
     if averagingBufferSize < 0:
-        sys.exit("averagingBufferSize should couldn't be negative")
+        sys.exit("averagingBufferSize couldn't be negative")
 
     if averagingBufferSize > 8192:
         sys.exit("max buffer size is 8192")
