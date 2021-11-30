@@ -2,20 +2,43 @@ import dwf
 import sys
 import time
 
-hdwf= 0     #crutch
+#######################################################################################
+######################################################################################
+#AD2init
+#######################################################################################
+######################################################################################
 
+
+def AD2init():
+
+    if len(dwf.DwfEnumeration()) == 0:
+        sys.exit("No AD2 detected")
+
+    hdwf = dwf.Dwf() # get token
+    AO = dwf.DwfAnalogOut(hdwf) # open device as analog outpput 
+    scope = dwf.DwfAnalogIn(hdwf) # open device as analog input 
+    return AO, scope
+
+#######################################################################################
+######################################################################################
+#AD2close
+#######################################################################################
+######################################################################################
+
+def AD2close(AO, scope):
+
+    scope.close() 
+    AO.close()  
 
 #######################################################################################
 ######################################################################################
 #GenSet
 #######################################################################################
 ######################################################################################
-def GenSet(frequency:int, amplitude:float, channel:bool):
 
-    
-    # if len(dwf.DwfEnumeration()) == 0:
-    #     sys.exit("No AD2 detected")
+def GenSet(frequency:int, amplitude:float, channel:bool, AO):
 
+    #Check input values
     if frequency > 5e7:
         sys.exit("Frequency cannot be > 50MHz")
     
@@ -31,10 +54,7 @@ def GenSet(frequency:int, amplitude:float, channel:bool):
     if not isinstance(channel, bool):
         sys.exit("Choose the right channel:\nFalse - 1st channel\nTrue - 2nd channel")
 
-    #open device as analog outpput
-    global hdwf
-    hdwf = dwf.Dwf()
-    AO = dwf.DwfAnalogOut(hdwf)
+    
     #confugure the channel
     AO.nodeEnableSet(channel, AO.NODE.CARRIER, True)
     AO.nodeFunctionSet(channel, AO.NODE.CARRIER, AO.FUNC.SINE)
@@ -47,26 +67,27 @@ def GenSet(frequency:int, amplitude:float, channel:bool):
     
     # break
     print("Press Enter to exit")
-    breaker = input()
-    if not breaker:
-        AO.close()
-        hdwf = 0
+    while True:
+        breaker = input()
+        if not breaker:
+            break
+
+
 #######################################################################################
 #######################################################################################
 #GetP2P
 #######################################################################################
 #######################################################################################
-def GetP2P(averagingBufferSize: int, channel:bool):
+
+def GetP2P(averagingBufferSize: int, channel: bool, scope):
 
     # Check input values
-    # if len(dwf.DwfEnumeration()) == 0:
-    #     sys.exit("No AD2 detected")
     
     if not isinstance(averagingBufferSize, int):
         sys.exit("avarangingBufferSize should be integer value")
     
     if averagingBufferSize < 0:
-        sys.exit("averagingBufferSize couldn't be negative")
+        sys.exit("averagingBufferSize should couldn't be negative")
 
     if averagingBufferSize > 8192:
         sys.exit("max buffer size is 8192")
@@ -74,13 +95,7 @@ def GetP2P(averagingBufferSize: int, channel:bool):
     if not isinstance(channel, bool):
         sys.exit("Choose the right channel:\nFalse - 1st channel\nTrue - 2nd channel")
     
-
-
-    # open device
-    if hdwf == 0:
-        scope = dwf.DwfAnalogIn()
-    else:
-        scope = dwf.DwfAnalogIn(hdwf)
+    
     # set up acquisition
     scope.frequencySet(1e8)
     scope.bufferSizeSet(averagingBufferSize)
@@ -100,7 +115,6 @@ def GetP2P(averagingBufferSize: int, channel:bool):
     # peak to peak value
     P2P = max(scope.statusData(channel, averagingBufferSize)) - min(scope.statusData(channel, averagingBufferSize))
     
-    # Finish
-    # scope.close()
-    # print(P2P)
     return P2P
+
+    
