@@ -1,28 +1,16 @@
-from AD2_functions import *
-from threading import *
+from AD2_BCC import *
 
-Device = AD2init()
+Device = AD2()
 
-gen1 = Thread(target=GenSet, args=(3e6, 1, False, Device[0]),)
-gen2 = Thread(target=GenSet, args=(3e6, 2, False, Device[0]),)
-gen3 = Thread(target=GenSet, args=(3e6, 5, False, Device[0]),)
+Device.GenSet(3e6, 1, 0)
+P2P_1 = Device.GetP2P (8192, 0)
 
-gen1.start()
-for i in range(5):
-    P2P = GetP2P(8192, False, Device[1])
-    print(P2P)
-gen1.join()
+Device.GenSet(3e6, 2.5, 0)
+P2P_2 = Device.GetP2P (8192, 0)
 
-gen2.start()
-for i in range(5):
-    P2P = GetP2P(8192, False, Device[1])
-    print(P2P)
-gen2.join()
+Device.GenSet(3e6, 5, 0)
+P2P_3 = Device.GetP2P (8192, 0)
 
-gen3.start()
-for i in range(5):
-    P2P = GetP2P(8192, False, Device[1])
-    print(P2P)
-gen3.join()
+print(P2P_1, P2P_2, P2P_3)
 
-AD2close(Device[0], Device[1])
+Device.close()
